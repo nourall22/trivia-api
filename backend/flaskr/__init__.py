@@ -104,27 +104,22 @@ def create_app(test_config=None):
             'total_questions': len(questions)
         })
 
-    '''
-  @TODO: 
-  Create a POST endpoint to get questions based on a search term. 
-  It should return any questions for whom the search term 
-  is a substring of the question. 
+    @app.route('/categories/<int:category_id>/questions', methods=['GET'])
+    def get_questions_by_category(category_id):
+        """
+        Get questions by category
+        """
+        if not category_id:
+            return abort(400, 'Invalid category id')
+        questions = [question.format() for question in
+                     Question.query.filter(Question.category == category_id)]
+        return jsonify({
+            'questions': questions,
+            'total_questions': len(questions),
+            'current_category': category_id
+        })
 
-  TEST: Search by any phrase. The questions list will update to include 
-  only question that include that string within their question. 
-  Try using the word "title" to start. 
   '''
-
-    '''
-  @TODO: 
-  Create a GET endpoint to get questions based on category. 
-
-  TEST: In the "List" tab / main screen, clicking on one of the 
-  categories in the left column will cause only questions of that 
-  category to be shown. 
-  '''
-
-    '''
   @TODO: 
   Create a POST endpoint to get questions to play the quiz. 
   This endpoint should take category and previous question parameters 
