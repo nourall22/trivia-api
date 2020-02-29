@@ -59,6 +59,19 @@ def create_app(test_config=None):
             'categories': categories
         })
 
+    @app.route('/questions/<int:question_id>', methods=['DELETE'])
+    def delete_question(question_id):
+        """
+        Delete a question by id
+        """
+        question = Question.query.get(question_id)
+        if not question:
+            return abort(404, f'There is no question with id: {question_id}')
+        question.delete()
+        return jsonify({
+            'deleted': question_id
+        })
+
     '''
   @TODO: 
   Create an endpoint to DELETE question using a question ID. 
