@@ -118,7 +118,7 @@ def create_app(test_config=None):
             'total_questions': len(questions),
             'current_category': category_id
         })
-        
+
     @app.route('/quizzes', methods=['POST'])
     def get_quiz_questions():
         """
@@ -140,10 +140,26 @@ def create_app(test_config=None):
             'question': question.format()
         })
 
-    '''
-  @TODO: 
-  Create error handlers for all expected errors 
-  including 404 and 422. 
-  '''
+    @app.errorhandler(HTTPException)
+    def http_exception_handler(error):
+        """
+        HTTP error handler for all endpoints
+        """
+        return jsonify({
+            'success': False,
+            'error': error.code,
+            'message': error.description
+        }), error.code
+
+    @app.errorhandler(Exception)
+    def exception_handler(error):
+        """
+        Server error
+        """
+        return jsonify({
+            'success': False,
+            'error': 500,
+            'message': f'Server error: {error}'
+        }), 500
 
     return app
