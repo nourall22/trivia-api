@@ -27,11 +27,17 @@ def create_app(test_config=None):
                              'GET, PATCH, POST, DELETE, OPTIONS')
         return response
 
-    '''
-  @TODO: 
-  Create an endpoint to handle GET requests 
-  for all available categories.
-  '''
+    @app.route('/categories', methods=['GET'])
+    def get_all_categories():
+        """
+        Get all categories from database
+        """
+        categories = {}
+        for category in Category.query.all():
+            categories[category.id] = category.type
+        return jsonify({
+            'categories': categories
+        })
 
     '''
   @TODO: 
