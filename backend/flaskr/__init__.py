@@ -91,6 +91,19 @@ def create_app(test_config=None):
             'question': question_entry.format()
         })
 
+    @app.route('/search', methods=['POST'])
+    def search():
+        """
+        search for questions using the search term
+        """
+        search_term = request.json.get('searchTerm', '')
+        questions = [question.format() for question in Question.query.all() if
+                     re.search(search_term, question.question, re.IGNORECASE)]
+        return jsonify({
+            'questions': questions,
+            'total_questions': len(questions)
+        })
+
     '''
   @TODO: 
   Create a POST endpoint to get questions based on a search term. 
