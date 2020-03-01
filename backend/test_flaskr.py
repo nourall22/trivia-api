@@ -54,7 +54,7 @@ class TriviaTestCase(unittest.TestCase):
         else:
             self.assertEqual(data['deleted'], 1)
 
-    def test_post_question(self):
+    def test_create_question(self):
         sample_question = {
             'question': 'Who invented the personal computer?',
             'answer': 'Steve Wozniak',
