@@ -68,6 +68,15 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertIsNotNone(data['question'])
 
+    def test_search(self):
+        request_data = {'searchTerm': 'what'}
+        res = self.client().post('/search', data=json.dumps(request_data),
+                                 content_type='application/json')
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        self.assertIsInstance(data['questions'], list)
+        self.assertIsInstance(data['total_questions'], int)
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
