@@ -54,6 +54,20 @@ class TriviaTestCase(unittest.TestCase):
         else:
             self.assertEqual(data['deleted'], 1)
 
+    def test_post_question(self):
+        sample_question = {
+            'question': 'Who invented the personal computer?',
+            'answer': 'Steve Wozniak',
+            'category': 4,
+            'difficulty': 2
+        }
+        res = self.client().post('/questions',
+                                 data=json.dumps(sample_question),
+                                 content_type='application/json')
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        self.assertIsNotNone(data['question'])
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
