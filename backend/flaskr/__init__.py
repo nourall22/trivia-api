@@ -1,6 +1,10 @@
 import os
+import re
 from flask import Flask, request, abort, jsonify
+from werkzeug.exceptions import HTTPException
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql.expression import func
+
 from flask_cors import CORS
 import random
 
@@ -97,11 +101,13 @@ def create_app(test_config=None):
         search for questions using the search term
         """
         search_term = request.json.get('searchTerm', '')
+        print("--------------------------", search_term)
         questions = [question.format() for question in Question.query.all() if
                      re.search(search_term, question.question, re.IGNORECASE)]
         return jsonify({
             'questions': questions,
-            'total_questions': len(questions)
+            'total_questions': len(questions),
+            'current_categories': []
         })
 
     @app.route('/categories/<int:category_id>/questions', methods=['GET'])
